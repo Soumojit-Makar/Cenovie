@@ -18,7 +18,7 @@ const crypto = require('crypto');
 exports.getSignature = (req, res) => {
   try {
     const timestamp = Math.round(Date.now() / 1000);
-    const folder    = 'digital-indian';
+    const folder    = 'Cenovie';
 
     // Parameters that must be signed (alphabetical order)
     const paramsToSign = `folder=${folder}&timestamp=${timestamp}`;
