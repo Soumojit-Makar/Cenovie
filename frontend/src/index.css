@@ -1,0 +1,146 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #ffffff;
+    color: #0a2040;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3,h4,h5,h6 { font-family: 'Syne', sans-serif; }
+}
+
+/* ── Marquee ─────────────────────────────────────────────── */
+.marquee-track {
+  animation: marqueeScroll 40s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── Gold shimmer on hover ───────────────────────────────── */
+.gold-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.gold-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(212,146,15,0.15) 50%, transparent 60%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+.gold-shimmer:hover::after {
+  transform: translateX(100%);
+}
+
+/* ── Gradient text ───────────────────────────────────────── */
+.text-gradient-gold {
+  background: linear-gradient(135deg, #f0ab18 0%, #f9d47a 50%, #d4920f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.text-gradient-navy {
+  background: linear-gradient(135deg, #0d2c58 0%, #2e72c4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@layer components {
+  /* ── Buttons ──────────────────────────────────────────── */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-5 py-2.5
+           bg-gold-500 hover:bg-gold-400
+           text-navy-900 text-sm font-semibold rounded-lg
+           transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-2
+           shadow-gold;
+  }
+  .btn-navy {
+    @apply inline-flex items-center gap-2 px-5 py-2.5
+           bg-brand-700 hover:bg-brand-600
+           text-white text-sm font-semibold rounded-lg
+           transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-brand-400 focus:ring-offset-2;
+  }
+  .btn-outline {
+    @apply inline-flex items-center gap-2 px-5 py-2.5
+           border border-gold-500 text-gold-600
+           hover:bg-gold-50 text-sm font-semibold rounded-lg
+           transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-gold-400 focus:ring-offset-2;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-4 py-2
+           text-brand-600 hover:text-brand-700 hover:bg-brand-50
+           text-sm font-medium rounded-lg transition-colors;
+  }
+  .btn-outline-white {
+    @apply inline-flex items-center gap-2 px-5 py-2.5
+           border border-white/25 text-white
+           hover:bg-white/10 text-sm font-semibold rounded-lg
+           transition-all duration-200;
+  }
+
+  /* ── Cards ────────────────────────────────────────────── */
+  .card {
+    @apply bg-white border border-slate-200 rounded-xl shadow-sm
+           hover:shadow-md hover:border-gold-300 transition-all duration-200;
+  }
+  .card-navy {
+    @apply bg-navy-800 border border-white/10 rounded-xl
+           hover:border-gold-500/40 transition-all duration-200;
+  }
+
+  /* ── Forms ────────────────────────────────────────────── */
+  .form-input {
+    @apply w-full px-3.5 py-2.5 border border-slate-300 rounded-lg bg-white
+           text-brand-900 placeholder-slate-400 text-sm
+           focus:outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-100
+           transition-colors;
+  }
+  .form-label {
+    @apply block text-sm font-medium text-brand-800 mb-1;
+  }
+
+  /* ── Section helpers ──────────────────────────────────── */
+  .section-label {
+    @apply inline-block text-xs font-bold text-gold-600 uppercase tracking-[0.18em] mb-2;
+  }
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold text-brand-900 leading-tight;
+  }
+  .section-sub {
+    @apply text-base text-slate-500 leading-relaxed max-w-2xl;
+  }
+
+  /* ── Badges ───────────────────────────────────────────── */
+  .badge        { @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold; }
+  .badge-gold   { @apply badge bg-gold-100 text-gold-700; }
+  .badge-navy   { @apply badge bg-brand-100 text-brand-700; }
+  .badge-gray   { @apply badge bg-slate-100 text-slate-600; }
+
+  /* ── Gold divider line ────────────────────────────────── */
+  .divider-gold {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-gold-400/50 to-transparent;
+  }
+}
+
+@layer utilities {
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #f8fafc; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
