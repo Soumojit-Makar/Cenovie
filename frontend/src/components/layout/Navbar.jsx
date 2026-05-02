@@ -61,7 +61,7 @@ export default function Navbar() {
               <div className="absolute inset-0 bg-gold-500 rounded-lg rotate-6 group-hover:rotate-12 transition-transform duration-300" />
               <span className="relative font-display font-bold text-navy-900 text-sm tracking-tight">CN</span>
             </div>
-            <span className="font-display font-bold text-white text-xl tracking-tight">
+            <span className="font-display font-bold text-gray-400 text-xl tracking-tight">
               Ceno<span className="text-gold-400">vie</span>
             </span>
           </Link>

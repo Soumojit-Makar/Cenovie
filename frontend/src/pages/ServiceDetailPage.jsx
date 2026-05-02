@@ -39,7 +39,7 @@ export default function ServiceDetailPage() {
         label="Our Services"
         title={service.title}
         subtitle={service.summary}
-        // img={service.icon}
+        img={service.heroImage}
         breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Services', to: '/services' }, { label: service.title }]}
       />
 

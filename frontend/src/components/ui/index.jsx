@@ -93,7 +93,7 @@ export function ServiceCard({ service }) {
   const Icon = iconMap[service.icon] || Code2;
   return (
     <Link to={`/services/${service.slug}`} className="card group flex flex-col h-full gold-shimmer">
-      {service.icon && !service.icon.startsWith("http") ? (
+      {/* {service.icon && !service.icon.startsWith("http") ? (
         <div className="p-6 pb-0">
           <div className="w-11 h-11 rounded-xl bg-brand-50 border border-brand-100 flex items-center justify-center mb-5 group-hover:bg-gold-50 group-hover:border-gold-200 transition-colors">
             <Icon className="w-5 h-5 text-brand-600 group-hover:text-gold-600 transition-colors" />
@@ -103,13 +103,16 @@ export function ServiceCard({ service }) {
         <div className="w-full h-40 overflow-hidden rounded-t-xl">
           <img src={service.icon} alt={service.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
         </div>
-      ) : null}
-      <div className="p-6 flex flex-col flex-grow">
+      ) : null} */}
+      <div className="flex flex-col flex-grow">
+        <img src={service.heroImage} alt={service.title} className="object-cover w-full h-auto" />
+        <div className="p-5 flex-grow">
         <h3 className="font-display font-semibold text-brand-900 group-hover:text-gold-600 transition-colors mb-2">{service.title}</h3>
         <p className="text-sm text-slate-500 leading-relaxed line-clamp-3 flex-grow">{service.summary}</p>
         <span className="mt-5 inline-flex items-center gap-1 text-xs font-semibold text-brand-600 group-hover:text-gold-600 group-hover:gap-2 transition-all">
           Learn more <ArrowRight className="w-3.5 h-3.5" />
         </span>
+        </div>
       </div>
     </Link>
   );

@@ -366,23 +366,24 @@ export default function HomePage() {
           />
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-10">
-            {coreServices.map((s) => (
-              <div
-                key={s.title}
-                className="card p-6 group hover:border-gold-300 gold-shimmer"
-              >
-                <div className="w-10 h-10 rounded-xl bg-brand-50 border border-brand-100 flex items-center justify-center mb-4 group-hover:bg-gold-50 group-hover:border-gold-200 transition-colors">
-                  <s.icon className="w-5 h-5 text-brand-600 group-hover:text-gold-600 transition-colors" />
-                </div>
-
+            {services.map((s) => (
+              <Link to={`/services/${s.slug}`} key={s.title} className="group">
+                <div
+                  key={s.title}
+                  className="card  group hover:border-gold-300 gold-shimmer"
+                >
+                  <img src={s.heroImage} alt={s.title}  className=" object-cover w-full h-auto"/>
+                <div className="mt-4 p-6">
                 <h3 className="font-display font-semibold text-brand-900 mb-2">
                   {s.title}
                 </h3>
 
                 <p className="text-sm text-slate-500 leading-relaxed">
-                  {s.desc}
+                  {s.summary}
                 </p>
+                </div>
               </div>
+              </Link>
             ))}
           </div>
 
