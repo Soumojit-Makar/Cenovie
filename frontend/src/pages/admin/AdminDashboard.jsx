@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { MessageSquare, FolderKanban, Briefcase, FileText, Users, TrendingUp, Flame, Thermometer, Snowflake, ArrowRight, Clock } from 'lucide-react'
+import { MessageSquare, FolderKanban, Briefcase, FileText, Users, TrendingUp, Flame, Thermometer, Snowflake, ArrowRight, Clock,Eye, Users } from 'lucide-react'
 import { enquiryAPI, projectAPI, blogAPI, jobAPI, analyticsAPI } from '../../services/api'
 
 function StatCard({ icon: Icon, label, value, sub, color = 'ocean', to }) {
