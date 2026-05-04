@@ -46,19 +46,18 @@ export default function AdminDashboard() {
           projectAPI.getAllAdmin(),
           blogAPI.getAllAdmin(),
           jobAPI.getAll(),
-          analyticsAPI.getStats(),          
+          analyticsAPI.getStats().then(res => {console.log(res); return res}),          
         ])
         if (eStats.status === 'fulfilled') setStats(eStats.value.data)
         if (enquiries.status === 'fulfilled') setRecentEnquiries(enquiries.value.data.enquiries || [])
-        if (aStats.status === 'fulfilled') {
+        if (aStats.status === 'fulfilled' ) {
           setAnalyticsStats(aStats.value.data)
         }
         setCounts({
           projects: projects.status === 'fulfilled' ? (projects.value.data.projects?.length || 0) : 0,
           blogs: blogs.status === 'fulfilled' ? (blogs.value.data.blogs?.length || 0) : 0,
           jobs: jobs.status === 'fulfilled' ? (jobs.value.data.jobs?.length || 0) : 0,
-          visitors: aStats.status === 'fulfilled' ? (aStats.value.data.totalVisitors || 0) : 0,
-          views: aStats.status === 'fulfilled' ? (aStats.value.data.totalViews || 0) : 0,
+          views: aStats.status === 'fulfilled' ? (aStats.value.data.total || 0) : 0,
         })
       } finally {
         setLoading(false)
@@ -84,7 +83,6 @@ export default function AdminDashboard() {
           <StatCard icon={FolderKanban} label="Projects" value={counts.projects} color="teal" to="/admin/projects" />
           <StatCard icon={FileText} label="Blog Posts" value={counts.blogs} color="amber" to="/admin/blogs" />
           <StatCard icon={Eye} label="Total Views" value={counts.views} color="blue" to="/admin/" />
-          <StatCard icon={Users} label="Total Visitors" value={counts.visitors} color="green" to="/admin/" />
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
