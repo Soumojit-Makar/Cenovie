@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { MessageSquare, FolderKanban, Briefcase, FileText, Users, TrendingUp, Flame, Thermometer, Snowflake, ArrowRight, Clock } from 'lucide-react'
-import { enquiryAPI, projectAPI, blogAPI, jobAPI } from '../../services/api'
+import { enquiryAPI, projectAPI, blogAPI, jobAPI, analyticsAPI } from '../../services/api'
 
 function StatCard({ icon: Icon, label, value, sub, color = 'ocean', to }) {
   const colors = {
@@ -35,23 +35,30 @@ export default function AdminDashboard() {
   const [recentEnquiries, setRecentEnquiries] = useState([])
   const [counts, setCounts] = useState({ projects: 0, blogs: 0, jobs: 0 })
   const [loading, setLoading] = useState(true)
+  const [analyticsStats, setAnalyticsStats] = useState(null)
 
   useEffect(() => {
     const load = async () => {
       try {
-        const [eStats, enquiries, projects, blogs, jobs] = await Promise.allSettled([
+        const [eStats, enquiries, projects, blogs, jobs, aStats] = await Promise.allSettled([
           enquiryAPI.getStats(),
           enquiryAPI.getAll({ limit: 5 }),
           projectAPI.getAllAdmin(),
           blogAPI.getAllAdmin(),
           jobAPI.getAll(),
+          analyticsAPI.getStats(),          
         ])
         if (eStats.status === 'fulfilled') setStats(eStats.value.data)
         if (enquiries.status === 'fulfilled') setRecentEnquiries(enquiries.value.data.enquiries || [])
+        if (aStats.status === 'fulfilled') {
+          setAnalyticsStats(aStats.value.data)
+        }
         setCounts({
           projects: projects.status === 'fulfilled' ? (projects.value.data.projects?.length || 0) : 0,
           blogs: blogs.status === 'fulfilled' ? (blogs.value.data.blogs?.length || 0) : 0,
           jobs: jobs.status === 'fulfilled' ? (jobs.value.data.jobs?.length || 0) : 0,
+          visitors: aStats.status === 'fulfilled' ? (aStats.value.data.totalVisitors || 0) : 0,
+          views: aStats.status === 'fulfilled' ? (aStats.value.data.totalViews || 0) : 0,
         })
       } finally {
         setLoading(false)
@@ -76,6 +83,8 @@ export default function AdminDashboard() {
           <StatCard icon={Flame} label="Hot Leads" value={stats?.hotLeads} sub="Needs immediate attention" color="red" to="/admin/enquiries" />
           <StatCard icon={FolderKanban} label="Projects" value={counts.projects} color="teal" to="/admin/projects" />
           <StatCard icon={FileText} label="Blog Posts" value={counts.blogs} color="amber" to="/admin/blogs" />
+          <StatCard icon={Eye} label="Total Views" value={counts.views} color="blue" to="/admin/" />
+          <StatCard icon={Users} label="Total Visitors" value={counts.visitors} color="green" to="/admin/" />
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">

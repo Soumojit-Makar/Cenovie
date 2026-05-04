@@ -1,18 +1,27 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { Calendar, Clock, Tag, ArrowLeft } from 'lucide-react'
-import { blogAPI } from '../services/api'
+import { Calendar, Clock, Tag, ArrowLeft, Eye, BarChart2, Monitor, Smartphone, Tablet } from 'lucide-react'
+import { blogAPI, analyticsAPI } from '../services/api'
 import { LoadingSpinner, CTABanner } from '../components/ui/index.jsx'
 
 export default function BlogDetailPage() {
   const { slug } = useParams()
   const [blog, setBlog] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [pageMeta, setPageMeta] = useState(null)
 
   useEffect(() => {
     blogAPI.getOne(slug)
-      .then(r => setBlog(r.data.blog))
+      .then(r => {
+        setBlog(r.data.blog)
+        // Fire page-view tracking silently
+        analyticsAPI.trackPageView(`/insights/${slug}`).catch(() => {})
+        // Load 30-day analytics snapshot for the metadata widget
+        analyticsAPI.getStats({ page: `/insights/${slug}`, days: 30 })
+          .then(s => setPageMeta(s.data))
+          .catch(() => {})
+      })
       .catch(() => {})
       .finally(() => setLoading(false))
   }, [slug])
@@ -124,6 +133,57 @@ export default function BlogDetailPage() {
                       {blog.author?.bio && <p className="text-xs text-slate-500 leading-relaxed mt-1">{blog.author.bio}</p>}
                     </div>
                   </div>
+                </div>
+
+                {/* ── Article Meta / Analytics Widget ───────────────── */}
+                <div className="card p-5 bg-white border border-slate-100">
+                  <div className="flex items-center gap-2 mb-4">
+                    <BarChart2 className="w-4 h-4 text-brand-600" />
+                    <h3 className="font-display font-semibold text-slate-900 text-sm">Article Info</h3>
+                  </div>
+
+                  {/* All-time views (from blog doc) */}
+                  <div className="flex items-center justify-between py-2 border-b border-slate-100">
+                    <span className="flex items-center gap-1.5 text-xs text-slate-500">
+                      <Eye className="w-3.5 h-3.5" /> Total views
+                    </span>
+                    <span className="text-xs font-semibold text-slate-800">{blog.views ?? 0}</span>
+                  </div>
+
+                  {/* 30-day views from analytics */}
+                  <div className="flex items-center justify-between py-2 border-b border-slate-100">
+                    <span className="flex items-center gap-1.5 text-xs text-slate-500">
+                      <BarChart2 className="w-3.5 h-3.5" /> Last 30 days
+                    </span>
+                    <span className="text-xs font-semibold text-slate-800">
+                      {pageMeta ? pageMeta.total : <span className="text-slate-300">—</span>}
+                    </span>
+                  </div>
+
+                  {/* Device breakdown */}
+                  {pageMeta?.byDevice?.length > 0 && (
+                    <div className="mt-3 space-y-1.5">
+                      <p className="text-xs text-slate-400 mb-2">Visitors by device</p>
+                      {pageMeta.byDevice.map(d => {
+                        const Icon = d._id === 'mobile' ? Smartphone : d._id === 'tablet' ? Tablet : Monitor
+                        const pct = pageMeta.total > 0 ? Math.round((d.count / pageMeta.total) * 100) : 0
+                        return (
+                          <div key={d._id} className="flex items-center gap-2">
+                            <Icon className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                            <div className="flex-1 bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                              <div
+                                className="h-1.5 rounded-full bg-brand-500 transition-all"
+                                style={{ width: `${pct}%` }}
+                              />
+                            </div>
+                            <span className="text-xs text-slate-500 w-8 text-right">{pct}%</span>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )}
+
+                  <p className="text-[10px] text-slate-300 mt-3">Stats update on each visit</p>
                 </div>
 
                 <div className="bg-brand-600 rounded-xl p-5">

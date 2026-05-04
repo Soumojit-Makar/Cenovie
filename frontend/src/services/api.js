@@ -97,4 +97,10 @@ export const mediaAPI = {
   delete: (publicId) => api.delete(`/media/${encodeURIComponent(publicId)}`),
 }
 
+// ── Analytics ──────────────────────────────────────────────────────────────
+export const analyticsAPI = {
+  trackPageView: (page) => api.post('/analytics/pageview', { page }),
+  getStats: (params) => api.get('/analytics/stats', { params }),
+}
+
 export default api
