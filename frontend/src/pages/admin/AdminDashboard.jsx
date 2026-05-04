@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { MessageSquare, FolderKanban, Briefcase, FileText, Users, TrendingUp, Flame, Thermometer, Snowflake, ArrowRight, Clock,Eye, Users } from 'lucide-react'
+import { MessageSquare, FolderKanban, Briefcase, FileText, Users, TrendingUp, Flame, Thermometer, Snowflake, ArrowRight, Clock, Eye} from 'lucide-react'
 import { enquiryAPI, projectAPI, blogAPI, jobAPI, analyticsAPI } from '../../services/api'
 
 function StatCard({ icon: Icon, label, value, sub, color = 'ocean', to }) {
@@ -116,6 +116,7 @@ export default function AdminDashboard() {
                       <p className="text-xs text-slate-500">{new Date(e.createdAt).toLocaleDateString('en-IN')}</p>
                       {!e.isRead && <span className="inline-block w-2 h-2 rounded-full bg-brand-400 mt-1" />}
                     </div>
+                    
                   </Link>
                 )
               })}
