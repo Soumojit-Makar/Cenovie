@@ -61,7 +61,7 @@ export default function ContactPage() {
               </div>
               <div className="space-y-5">
                 {[
-                  { icon: Mail,    label: 'Email',    value: 'hello@cenovie.com',      href: 'mailto:main@cenovie.site' },
+                  { icon: Mail,    label: 'Email',    value: 'main@cenovie.com',      href: 'mailto:main@cenovie.site' },
                   { icon: Phone,   label: 'Phone',    value: '+91 7477407178',         href: 'tel:+917477407178' },
                   { icon: MapPin,  label: 'Office',   value: 'Kolkata, West Bengal, India' },
                   { icon: Clock,   label: 'Response', value: 'Within 48 business hours' },
